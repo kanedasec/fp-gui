@@ -17,21 +17,18 @@ Aplicativo desktop em Python com **interface gráfica (Tkinter + ttkbootstrap)**
 
 ## 🏗️ Estrutura do Projeto
 
-fp-gui/
-
-├── main.py # GUI principal
-
-├── functions.py # Funções auxiliares
-
-├── doc.py # Geração do relatório DOCX
-
-├── data.py # Estrutura de dados e origens
-
-├── logo.png # Logo da empresa/time de segurança
-
-├── build.py # Script para empacotar o app
-
-└── requirements.txt
+    fp-gui/
+    ├── functions/
+        ├── functions.py # Funções auxiliares
+        ├── doc.py # Geração do relatório DOCX
+    ├── utils/
+        ├── data.py # Estrutura de dados e origens
+        ├── vuln_data.py # Estrutura de dados de vulnerabilidades
+        ├── logo.png # Logo da empresa/time de segurança
+    ├── build/
+        ├── build.py # Script para empacotar o app
+    ├── main.py # GUI principal    
+    └── requirements.txt
 
 
 ---
@@ -70,8 +67,9 @@ python build.py
 ```
 
 O executável será gerado em:
-
+```
 dist/fp-gui.exe
+```
 
 📄 Relatório Gerado
 
