@@ -1,2 +1,4 @@
-ttkbootstrap
-python-docx
+ttkbootstrap>=1.10.1
+python-docx>=1.1.0
+PyInstaller>=6.3.0
+Pillow>=10.0.0
