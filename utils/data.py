@@ -1,4 +1,4 @@
-import vuln_data
+from utils import vuln_data
 
 SESSAO_AUTENTICADA = ["Sim", "Não"]
 

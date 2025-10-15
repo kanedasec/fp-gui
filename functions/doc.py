@@ -1,4 +1,4 @@
-from data import ORIGENS
+from utils.data import ORIGENS
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 import ast

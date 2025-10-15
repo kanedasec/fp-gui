@@ -5,9 +5,9 @@ import tkinter as tk
 from tkinter import messagebox
 import ttkbootstrap as tb
 from ttkbootstrap.constants import *
-from data import ORIGENS
-from functions import handle_anexar_evidencia, handle_adicionar_justificativa, delete_selected_item
-from doc import criar_report
+from utils.data import ORIGENS
+from functions.functions import handle_anexar_evidencia, handle_adicionar_justificativa, delete_selected_item
+from functions.doc import criar_report
 
 
 # ===============================================================
@@ -164,7 +164,7 @@ def main():
             messagebox.showwarning("Validação", "Adicione pelo menos uma justificativa.")
             return
 
-        logo = resource_path("logo.png") if os.path.exists("logo.png") else None
+        logo = resource_path("utils/logo.png") if os.path.exists("utils/logo.png") else None
         try:
             criar_report(logo, list(respostas.values()), tuple_justificativa)
             messagebox.showinfo("Relatório", "Relatório DOCX gerado com sucesso! ✅")
