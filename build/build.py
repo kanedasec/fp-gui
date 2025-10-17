@@ -16,8 +16,11 @@ MAIN_FILE = os.path.join(BASE_DIR, "main.py")
 # Caminho do logo (dentro de utils/)
 LOGO_PATH = os.path.join(BASE_DIR, "utils", "logo.png")
 
+# Caminho do ICO (dentro de utils/)
+ICO_PATH = os.path.join(BASE_DIR, "utils", "icon.png")
+
 # Nome do executável
-APP_NAME = "fp-gui"
+APP_NAME = "Gerador de Justificativas"
 
 # Caminhos de saída
 DIST_DIR = os.path.join(BASE_DIR, "dist")
@@ -56,12 +59,8 @@ PyInstaller.__main__.run([
     "--name", APP_NAME,
     "--onefile",               # gera executável único
     "--noconsole",             # oculta o console (para GUI)
+    f"--icon={ICO_PATH}",
     ADD_DATA,
-    "--hidden-import=ttkbootstrap",
-    "--hidden-import=docx",
-    "--hidden-import=data",
-    "--hidden-import=functions",
-    "--hidden-import=doc",
     "--workpath", BUILD_DIR,
     "--distpath", DIST_DIR,
 ])

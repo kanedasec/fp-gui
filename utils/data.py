@@ -1,11 +1,15 @@
-from utils import vuln_data
+from utils.vuln_data.sast_data import *
+from utils.vuln_data.dast_data import *
+from utils.vuln_data.sdu_data import *
+from utils.vuln_data.bsv_data import *
 
 SESSAO_AUTENTICADA = ["Sim", "Não"]
 
 RISCO = ["Vulnerabilidade não se aplica", "Vulnerabilidade Mitigado", "Auxílio para correção", "Falso Positivo Confirmado", "Dependência Externa ou de Terceiro"]
 
-
 CRITICIDADE = ["informativo", "baixa", "média", "alta", "crítica"]
+
+VERTICAL = [ "HOLDING", "OV", "BVP", "CAP", "INFRA", "BARE", "SAÚDE"]
 
 AMBIENTE = ["Internet", "Intranet", "Ambos"]
 
@@ -34,12 +38,12 @@ ORIGENS = {
             {"label": "Sessão Autenticada?", "type": "combobox", "values": SESSAO_AUTENTICADA},
             {"label": "Ambiente", "type": "combobox", "values": AMBIENTE},
         ],
-        "vulnerabilidades": vuln_data.SAST_DATA,
+        "vulnerabilidades": SAST_DATA,
         "formulario": [
             {"label": "Criticidade", "type": "combobox", "values": CRITICIDADE},
             {"label": "Quantidade de Apontamentos", "type": "entry"},
             {"label": "Estado da Vulnerabilidade", "type": "combobox", "values": RISCO},
-            {"label": "Justificativa", "type": "text"},
+            {"label": "Justificativa Técnica", "type": "text"},
         ],
     },
 
@@ -51,12 +55,12 @@ ORIGENS = {
             {"label": "Sessão Autenticada?", "type": "combobox", "values": SESSAO_AUTENTICADA},
             {"label": "Ambiente", "type": "combobox", "values": AMBIENTE},
         ],
-        "vulnerabilidades": vuln_data.SAST_DATA,
+        "vulnerabilidades": DAST_DATA,
         "formulario": [
             {"label": "Criticidade", "type": "combobox", "values": CRITICIDADE},
             {"label": "Quantidade de Apontamentos", "type": "entry"},
             {"label": "Estado da Vulnerabilidade", "type": "combobox", "values": RISCO},
-            {"label": "Justificativa", "type": "text"},
+            {"label": "Justificativa Técnica", "type": "text"},
         ],
     },
 
@@ -66,7 +70,7 @@ ORIGENS = {
             {"label": "Url", "type": "entry"},
             {"label": "Ambiente", "type": "combobox", "values": AMBIENTE},
         ],
-        "vulnerabilidades": vuln_data.SDU_DATA,
+        "vulnerabilidades": SDU_DATA,
         "formulario": [
             {"label": "IDs das Vulnerabilidades", "type": "entry"},
             {"label": "Criticidade", "type": "combobox", "values": CRITICIDADE},
@@ -77,15 +81,15 @@ ORIGENS = {
 
     "BSV": {
         "dados_aplicacao": [
-            {"label": "Nome do Serviço", "type": "entry"},
-            {"label": "Url", "type": "entry"},
+            {"label": "Solicitante", "type": "combobox", "values": VERTICAL},
+            {"label": "Nome do Serviço/Hostname", "type": "entry"},
             {"label": "Ambiente", "type": "combobox", "values": AMBIENTE},
         ],
-        "vulnerabilidades": vuln_data.BSV_DATA,
+        "vulnerabilidades": BSV_DATA,
         "formulario": [
             {"label": "IDs das Vulnerabilidades", "type": "entry"},
             {"label": "Criticidade", "type": "combobox", "values": CRITICIDADE},
-            {"label": "Estado da Vulnerabilidade", "type": "combobox", "values": ["Mitigada", "Erradicada"]},
+            {"label": "Estado da Vulnerabilidade", "type": "combobox", "values": ["Mitigada", "Erradicada", "Desativada"]},
             {"label": "Justificativa técnica", "type": "text"},
         ],
     }

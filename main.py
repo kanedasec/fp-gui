@@ -6,7 +6,7 @@ from tkinter import messagebox
 import ttkbootstrap as tb
 from ttkbootstrap.constants import *
 from utils.data import ORIGENS
-from functions.functions import handle_anexar_evidencia, handle_adicionar_justificativa, delete_selected_item
+from functions.functions import handle_anexar_evidencia, handle_adicionar_justificativa, delete_selected_item, clean_items
 from functions.doc import criar_report
 
 
@@ -64,9 +64,39 @@ def render_generic_form(frame, campos):
 # Função principal
 # ===============================================================
 def main():
-    app = tb.Window(themename="superhero")
-    app.title("Gerador de Justificativas de Falsos Positivos")
+    app = tb.Window(themename="pulse")
+    app.title("Gerador de Justificativas")
     app.geometry("1100x800")
+
+   # Bloco para permitir escolha do tema em tempo real
+    style = app.style
+    temas = {"Dia": "pulse", "Noite": "superhero"}
+
+    tema_frame = tb.Frame(app, padding=(5, 0))
+    tema_frame.pack(fill=X, padx=10, pady=(5, 0))
+
+    tb.Label(tema_frame, text="Tema: ").pack(side=LEFT, padx=(0, 5))
+
+    tema_combobox = tb.Combobox(
+        tema_frame,
+        values=list(temas.keys()),
+        state="readonly",
+        width=15
+    )
+    tema_combobox.set("Dia")
+    tema_combobox.pack(side=LEFT)
+
+    def trocar_tema(event=None):
+        tema_selecionado = tema_combobox.get()
+        novo_tema = temas.get(tema_selecionado, style.theme_use())
+        try:
+            style.theme_use(novo_tema)
+        except Exception as e:
+            messagebox.showerror("Erro ao aplicar tema", str(e))
+        
+
+    tema_combobox.bind("<<ComboboxSelected>>", trocar_tema)
+    # Fim do bloco para escolha do tema em real time
 
     main_pane = tb.Panedwindow(app, orient=HORIZONTAL)
     main_pane.pack(fill=BOTH, expand=True, padx=10, pady=10)
@@ -132,6 +162,8 @@ def main():
     lista_justificativa = tk.Listbox(lista_labelframe, height=10)
     lista_justificativa.pack(fill=BOTH, expand=True)
     lista_justificativa.bind("<Delete>", lambda e: delete_selected_item(lista_justificativa))
+    
+    
 
     # ===========================================================
     # BOTÕES
@@ -153,26 +185,48 @@ def main():
             tipo_vuln.get()
         )
     ).pack(side=LEFT, padx=5)
+    
+    tb.Button(
+        btn_frame,
+        text="Deletar Justificativa",
+        bootstyle=WARNING,
+        command=lambda: delete_selected_item(lista_justificativa)
+    ).pack(side=LEFT, padx=5)
 
     def gerar_relatorio_func():
         tuple_justificativa = lista_justificativa.get(0, tk.END)
-        respostas = {lbl: w.get() if hasattr(w, "get") else "" for lbl, w in dados_widgets.items()}
-        if not respostas:
-            messagebox.showwarning("Validação", "Preencha os dados da aplicação.")
-            return
+        respostas_app = {lbl: w.get() if hasattr(w, "get") else "" for lbl, w in dados_widgets.items()}    
+        
+        if origem_combobox.get() == "BSV": 
+       
+            if any(valor.strip() == "" for chave, valor in respostas_app.items() if chave != "Nome do Serviço/Hostname"):
+                messagebox.showwarning("Validação", "Preencha todos os dados da aplicação.")
+                return
+        else:
+             if any(valor.strip() == "" for valor in respostas_app.values()):
+                messagebox.showwarning("Validação", "Preencha todos os dados da aplicação.")
+                return 
+     
         if not tuple_justificativa:
             messagebox.showwarning("Validação", "Adicione pelo menos uma justificativa.")
             return
 
         logo = resource_path("utils/logo.png") if os.path.exists("utils/logo.png") else None
         try:
-            criar_report(logo, list(respostas.values()), tuple_justificativa)
+            criar_report(logo, list(respostas_app.values()), tuple_justificativa)
             messagebox.showinfo("Relatório", "Relatório DOCX gerado com sucesso! ✅")
         except Exception as e:
             messagebox.showerror("Erro", str(e))
 
     tb.Button(btn_frame, text="Gerar Relatório", bootstyle=SUCCESS,
               command=gerar_relatorio_func).pack(side=RIGHT, padx=5)
+    
+    tb.Button(
+        btn_frame,
+        text="Limpar Justificativas",
+        bootstyle=DANGER,
+        command=lambda: clean_items(lista_justificativa)
+    ).pack(side=RIGHT, padx=5)
 
     # ===========================================================
     # EVENTO: MUDANÇA DE ORIGEM
@@ -185,7 +239,7 @@ def main():
         # Renderiza novos blocos
         dados_widgets = render_generic_form(dados_frame, config.get("dados_aplicacao", []))
         justific_widgets = render_generic_form(form_frame, config.get("formulario", []))
-
+        
         # Atualiza lista de vulnerabilidades
         lista_vuln.delete(0, tk.END)
         for v in config.get("vulnerabilidades", []):

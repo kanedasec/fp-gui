@@ -26,6 +26,10 @@ def delete_selected_item(listbox):
     for i in reversed(selected):
         listbox.delete(i)
 
+def clean_items(listbox):
+    """Remove todos os itens da listbox."""
+    listbox.delete(0, tk.END)
+
 
 def coletar_valores(widgets_dict):
     """Coleta todos os valores de um conjunto de widgets."""
@@ -48,7 +52,8 @@ def handle_adicionar_justificativa(widgets_dict, lista_justificativa, origem, ti
     """Adiciona a justificativa à lista, incluindo origem e tipo da vulnerabilidade."""
     global attached_evidence
 
-    dados = coletar_valores(widgets_dict)
+    dados = coletar_valores(widgets_dict)      
+
     if not dados:
         messagebox.showwarning("Atenção", "Nenhum campo preenchido.")
         return
@@ -60,6 +65,11 @@ def handle_adicionar_justificativa(widgets_dict, lista_justificativa, origem, ti
     if not tipo_vuln:
         messagebox.showwarning("Atenção", "Selecione o tipo de vulnerabilidade.")
         return
+    
+    if any(valor.strip() == "" for valor in dados.values()):
+        messagebox.showwarning("Validação", "Preencha todos os dados da Justificativa.")
+        return    
+
 
     # Adiciona campos fixos
     dados_final = {

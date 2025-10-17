@@ -20,13 +20,19 @@ Aplicativo desktop em Python com **interface gráfica (Tkinter + ttkbootstrap)**
     fp-gui/
     ├── functions/
         ├── functions.py # Funções auxiliares
-        ├── doc.py # Geração do relatório DOCX
+        └──doc.py # Geração do relatório DOCX
     ├── utils/
+        └──vuln_data/ # Estrutura de dados de vulnerabilidades
+            ├── sast_data.py # Lista de vulnerabilidades SAST
+            ├── dast_data.py # Lista de vulnerabilidades DAST
+            ├── sdu_data.py # Lista de vulnerabilidades SDU
+            ├── bsv_data.py # Lista de vulnerabilidades BSV
+            └── py_list-converter.py # conversor de listas de texto para listas python
         ├── data.py # Estrutura de dados e origens
-        ├── vuln_data.py # Estrutura de dados de vulnerabilidades
         ├── logo.png # Logo da empresa/time de segurança
+        └──icon.png # icone da empresa/time de segurança
     ├── build/
-        ├── build.py # Script para empacotar o app
+        └── build.py # Script para empacotar o app
     ├── main.py # GUI principal    
     └── requirements.txt
 
